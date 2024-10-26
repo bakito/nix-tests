@@ -6,6 +6,10 @@ let
     # Replace with the path to your database, entry, and optional key file
     export MY_SECRET=$(keepassxc-cli show -q -a password /path/to/your/database.kdbx entry/path --key-file /path/to/keyfile)
   '';
+  sessionVariables = {
+    EDITOR = "nano";
+    MY_SECRET = "${loadSecrets}/bin/loadSecrets";
+  };
 in
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -79,10 +83,7 @@ in
   #
   #  /etc/profiles/per-user/bakito/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = {
-    EDITOR = "nano";
-    MY_SECRET = "${loadSecrets}/bin/loadSecrets";
-  };
+  home.sessionVariables = sessionVariables;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -90,9 +91,23 @@ in
   programs.bash = {
     enable = true;
     bashrcExtra = ''
-      . /home/bakito/.nix-profile/etc/profile.d/nix.sh
+      . $HOME/.nix-profile/etc/profile.d/nix.sh
+      . $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+
       eval "$(starship init bash)"
+
+      bind '"\e[A": history-search-backward'
+      bind '"\e[B": history-search-forward'
     '';
+    sessionVariables = sessionVariables;
+    shellAliases = {
+      grep = "grep --color=auto";
+      k = "kubectl";
+      l = "ls -CF";
+      la = "ls -A";
+      ll = "ls -alFh";
+      ls = "ls --color=auto";
+    };
   };
 
   programs.starship = {
