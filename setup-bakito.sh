@@ -10,5 +10,6 @@ nix-channel --update
 nix-shell '<home-manager>' -A install
 
 cp /tmp/home.nix /home/bakito/.config/home-manager/home.nix
+touch /home/bakito/.hushlogin
 
 home-manager switch -b backup

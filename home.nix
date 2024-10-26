@@ -109,4 +109,8 @@ in
       # package.disabled = true;
     };
   };
+
+  # for mint cinnamon
+  # https://github.com/nix-community/home-manager/issues/5102
+  # xdg.mime.enable = false;
 }
