@@ -94,6 +94,10 @@ in
       . $HOME/.nix-profile/etc/profile.d/nix.sh
       . $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
 
+      if [ -f $HOME/.gimme/envs/latest.env ]; then
+        . $HOME/.gimme/envs/latest.env
+      fi
+
       eval "$(starship init bash)"
 
       bind '"\e[A": history-search-backward'
